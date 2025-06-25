@@ -1,0 +1,133 @@
+SOAL 6.1 
+
+1.	Buatlah Procedure untuk mengupdate harga_jual berdasarkan jenis produk tertentu (jenis_produk_id), beri nama procedure pro_naikan_harga memiliki parameter yang akan menerima argumen: Jenis Produk ID dan Persentase kenaikan harga.
+MariaDB [dbkoperasi_sibmandiri]> SELECT * FROM produk;
++----+--------+------------------+------------+------------+------+----------+-----------------+
+| id | kode   | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+--------+------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01   | Televisi 21 inch |    3500000 |    5241600 |   40 |        2 |               1 |
+|  2 | TV02   | Televisi 40 inch |    5500000 |    7737600 |    4 |        2 |               1 |
+|  3 | K001   | Kulkas 2 pintu   |    3500000 |    4867200 |    6 |        2 |               1 |
+|  4 | M001   | Meja Makan       |     500000 |     600000 |    4 |        3 |               2 |
+|  5 | TK01   | Teh Kotak        |       3000 |       3500 |    6 |       10 |               4 |
+|  6 | PC01   | PC Desktop HP    |    7000000 |   10560000 |    9 |        2 |               5 |
+|  7 | TB01   | Teh Botol        |       2000 |       2500 |   53 |       10 |               4 |
+|  8 | AC01   | Notebook Acer    |    8000000 |   11880000 |    7 |        2 |               5 |
+|  9 | LN01   | Notebook Lenovo  |    9000000 |   13200000 |    9 |        2 |               5 |
+| 10 | L004   | Laptop HP        |   12000000 |   14300000 |   20 |        5 |               5 |
+| 11 | K30011 | Meja Rias        |    3000000 |    2000000 |   10 |        5 |               2 |
+| 12 | K40011 | Kursi Kelas      |     400000 |     300000 |   20 |        5 |               2 |
+| 13 | K50011 | Kursi Gaming     |    5000000 |    4000000 |   30 |        5 |               2 |
+| 14 | SM001  | Susu Murni       |      15000 |      20000 |   10 |        5 |               3 |
++----+--------+------------------+------------+------------+------+----------+-----------------+
+14 rows in set (0.001 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> DELIMITER $$
+MariaDB [dbkoperasi_sibmandiri]> CREATE PROCEDURE pro_naikan_harga (
+    -> IN jenis_produk INT,
+    -> IN persentase_kenaikan INT)
+    -> BEGIN
+    -> UPDATE produk SET harga_jual = harga_jual + (harga_jual * persentase_kenaikan / 100)
+    -> WHERE jenis_produk_id = jenis_produk;
+    -> END $$
+Query OK, 0 rows affected (0.015 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> DELIMITER ;
+MariaDB [dbkoperasi_sibmandiri]> CALL pro_naikan_harga(1, 4);
+Query OK, 3 rows affected (0.002 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> SELECT * FROM produk;
++----+--------+------------------+------------+------------+------+----------+-----------------+
+| id | kode   | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id |
++----+--------+------------------+------------+------------+------+----------+-----------------+
+|  1 | TV01   | Televisi 21 inch |    3500000 |    5451264 |   40 |        2 |               1 |
+|  2 | TV02   | Televisi 40 inch |    5500000 |    8047104 |    4 |        2 |               1 |
+|  3 | K001   | Kulkas 2 pintu   |    3500000 |    5061888 |    6 |        2 |               1 |
+|  4 | M001   | Meja Makan       |     500000 |     600000 |    4 |        3 |               2 |
+|  5 | TK01   | Teh Kotak        |       3000 |       3500 |    6 |       10 |               4 |
+|  6 | PC01   | PC Desktop HP    |    7000000 |   10560000 |    9 |        2 |               5 |
+|  7 | TB01   | Teh Botol        |       2000 |       2500 |   53 |       10 |               4 |
+|  8 | AC01   | Notebook Acer    |    8000000 |   11880000 |    7 |        2 |               5 |
+|  9 | LN01   | Notebook Lenovo  |    9000000 |   13200000 |    9 |        2 |               5 |
+| 10 | L004   | Laptop HP        |   12000000 |   14300000 |   20 |        5 |               5 |
+| 11 | K30011 | Meja Rias        |    3000000 |    2000000 |   10 |        5 |               2 |
+| 12 | K40011 | Kursi Kelas      |     400000 |     300000 |   20 |        5 |               2 |
+| 13 | K50011 | Kursi Gaming     |    5000000 |    4000000 |   30 |        5 |               2 |
+| 14 | SM001  | Susu Murni       |      15000 |      20000 |   10 |        5 |               3 |
++----+--------+------------------+------------+------------+------+----------+-----------------+
+14 rows in set (0.001 sec)
+
+
+
+2.	Buat fungsi umur dengan parameter yang menerima inputan argumen tipe data date dan mengembalikan hasil perhitungan umur (tahun sekarang dikurang tahun inputan) dengan tipe data bilangan bulat (integer) positif.
+MariaDB [dbkoperasi_sibmandiri]> DELIMITER $$
+MariaDB [dbkoperasi_sibmandiri]> CREATE FUNCTION umur(tgl_lahir DATE)
+    -> RETURNS INT
+    -> BEGIN
+    -> DECLARE umur INT;
+    -> SET umur = YEAR(CURDATE()) - YEAR(tgl_lahir);
+    -> RETURN umur;
+    -> END $$
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> DELIMITER ;
+MariaDB [dbkoperasi_sibmandiri]> SELECT nama, umur(tgl_lahir) AS umur FROM pelanggan;
++---------------+------+
+| nama          | umur |
++---------------+------+
+| Agung Sedayu  |   15 |
+| Pandan Wangi  |   75 |
+| Sekar Mirah   |   42 |
+| Swandaru Geni |   44 |
+| Pradabashu    |   40 |
+| Gayatri Dwi   |   38 |
+| Dewi Gyat     |   37 |
+| Andre Haru    |   35 |
+| Ahmad Hasan   |   33 |
+| Cassanndra    |   35 |
++---------------+------+
+10 rows in set (0.003 sec)
+
+
+
+3.	Buat fungsi kategori_harga dengan parameter yang menerima inputan argument tipe data double dan mengembalikan tipe data string kategori harga berdasarkan: (0 – 500rb : murah; 500rb – 3 juta : sedang; 3jt – 10 juta : mahal; > 10 juta : sangat mahal)
+MariaDB [dbkoperasi_sibmandiri]> DELIMITER $$
+MariaDB [dbkoperasi_sibmandiri]> CREATE FUNCTION kategori_harga(harga DOUBLE)
+    -> RETURNS VARCHAR(15)
+    -> DETERMINISTIC
+    -> BEGIN
+    -> DECLARE kategori VARCHAR(15);
+    -> IF harga <= 500000 THEN
+    -> SET kategori = 'Murah';
+    -> ELSEIF harga > 500000 AND harga <= 3000000 THEN
+    -> SET kategori = 'Sedang';
+    -> ELSEIF harga > 3000000 AND harga <= 10000000 THEN
+    -> SET kategori = 'Mahal';
+    -> ELSEIF harga > 10000000 THEN
+    -> SET kategori = 'Sangat Mahal';
+    -> END IF;
+    -> RETURN kategori;
+    -> END $$
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> DELIMITER ;
+MariaDB [dbkoperasi_sibmandiri]> SELECT *, kategori_harga(harga_jual) AS kategori_harga FROM produk;
++----+--------+------------------+------------+------------+------+----------+-----------------+----------------+
+| id | kode   | nama             | harga_beli | harga_jual | stok | min_stok | jenis_produk_id | kategori_harga |
++----+--------+------------------+------------+------------+------+----------+-----------------+----------------+
+|  1 | TV01   | Televisi 21 inch |    3500000 |    5451264 |   40 |        2 |               1 | Mahal          |
+|  2 | TV02   | Televisi 40 inch |    5500000 |    8047104 |    4 |        2 |               1 | Mahal          |
+|  3 | K001   | Kulkas 2 pintu   |    3500000 |    5061888 |    6 |        2 |               1 | Mahal          |
+|  4 | M001   | Meja Makan       |     500000 |     600000 |    4 |        3 |               2 | Sedang         |
+|  5 | TK01   | Teh Kotak        |       3000 |       3500 |    6 |       10 |               4 | Murah          |
+|  6 | PC01   | PC Desktop HP    |    7000000 |   10560000 |    9 |        2 |               5 | Sangat Mahal   |
+|  7 | TB01   | Teh Botol        |       2000 |       2500 |   53 |       10 |               4 | Murah          |
+|  8 | AC01   | Notebook Acer    |    8000000 |   11880000 |    7 |        2 |               5 | Sangat Mahal   |
+|  9 | LN01   | Notebook Lenovo  |    9000000 |   13200000 |    9 |        2 |               5 | Sangat Mahal   |
+| 10 | L004   | Laptop HP        |   12000000 |   14300000 |   20 |        5 |               5 | Sangat Mahal   |
+| 11 | K30011 | Meja Rias        |    3000000 |    2000000 |   10 |        5 |               2 | Sedang         |
+| 12 | K40011 | Kursi Kelas      |     400000 |     300000 |   20 |        5 |               2 | Murah          |
+| 13 | K50011 | Kursi Gaming     |    5000000 |    4000000 |   30 |        5 |               2 | Mahal          |
+| 14 | SM001  | Susu Murni       |      15000 |      20000 |   10 |        5 |               3 | Murah          |
++----+--------+------------------+------------+------------+------+----------+-----------------+----------------+
+14 rows in set (0.001 sec)
