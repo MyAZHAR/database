@@ -1,0 +1,80 @@
+MariaDB [dbpenerimaan_karyawan]> SHOW TABLES;
++---------------------------------+
+| Tables_in_dbpenerimaan_karyawan |
++---------------------------------+
+| karyawan                        |
+| pengajuan                       |
+| satuan_kerja                    |
++---------------------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [dbpenerimaan_karyawan]> INSERT INTO satuan_kerja(satuan_kerja)
+    -> VALUES ('biro umum'), ('biro kepegawaian'), ('biro administrasi');
+Query OK, 3 rows affected (0.004 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpenerimaan_karyawan]> INSERT INTO karyawan(nip, nama, id_satuan_kerja)
+    -> VALUES
+    -> ('10001', 'budi', 1),
+    -> ('10032', 'dewi', 2),
+    -> ('10044', 'dona', 1),
+    -> ('10021', 'faiz', 3);
+Query OK, 4 rows affected (0.005 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpenerimaan_karyawan]> INSERT INTO pengajuan (nip, tanggal_awal, tanggal_akhir, status)
+    -> VALUES
+    -> ('10001', '2020-01-01', '2020-01-03', 'ditolak'),
+    -> ('10001', '2020-01-15', '2020-01-17', 'diterima'),
+    -> ('10001', '2020-01-20', '2020-01-24', 'diterima'),
+    -> ('10001', '2020-02-03', '2020-02-04', 'ditolak'),
+    -> ('10001', '2020-03-08', '2020-03-10', 'ditolak'),
+    -> ('10001', '2020-04-05', '2020-04-05', 'diterima'),
+    -> ('10032', '2020-01-02', '2020-01-02', 'diterima'),
+    -> ('10032', '2020-02-04', '2020-02-07', 'diterima'),
+    -> ('10032', '2020-03-05', '2020-03-10', 'ditolak'),
+    -> ('10044', '2020-04-04', '2020-04-05', 'diterima'),
+    -> ('10021', '2020-02-17', '2020-02-19', 'ditolak'),
+    -> ('10021', '2020-03-23', '2020-03-28', 'diterima');
+Query OK, 12 rows affected (0.004 sec)
+Records: 12  Duplicates: 0  Warnings: 0
+
+MariaDB [dbpenerimaan_karyawan]> SELECT * FROM satuan_kerja;
++----+-------------------+
+| id | satuan_kerja      |
++----+-------------------+
+|  1 | biro umum         |
+|  2 | biro kepegawaian  |
+|  3 | biro administrasi |
++----+-------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [dbpenerimaan_karyawan]> SELECT * FROM karyawan;
++-------+------+-----------------+
+| nip   | nama | id_satuan_kerja |
++-------+------+-----------------+
+| 10001 | budi |               1 |
+| 10021 | faiz |               3 |
+| 10032 | dewi |               2 |
+| 10044 | dona |               1 |
++-------+------+-----------------+
+4 rows in set (0.000 sec)
+
+MariaDB [dbpenerimaan_karyawan]> SELECT * FROM pengajuan;
++----+-------+--------------+---------------+----------+
+| id | nip   | tanggal_awal | tanggal_akhir | status   |
++----+-------+--------------+---------------+----------+
+|  1 | 10001 | 2020-01-01   | 2020-01-03    | ditolak  |
+|  2 | 10001 | 2020-01-15   | 2020-01-17    | diterima |
+|  3 | 10001 | 2020-01-20   | 2020-01-24    | diterima |
+|  4 | 10001 | 2020-02-03   | 2020-02-04    | ditolak  |
+|  5 | 10001 | 2020-03-08   | 2020-03-10    | ditolak  |
+|  6 | 10001 | 2020-04-05   | 2020-04-05    | diterima |
+|  7 | 10032 | 2020-01-02   | 2020-01-02    | diterima |
+|  8 | 10032 | 2020-02-04   | 2020-02-07    | diterima |
+|  9 | 10032 | 2020-03-05   | 2020-03-10    | ditolak  |
+| 10 | 10044 | 2020-04-04   | 2020-04-05    | diterima |
+| 11 | 10021 | 2020-02-17   | 2020-02-19    | ditolak  |
+| 12 | 10021 | 2020-03-23   | 2020-03-28    | diterima |
++----+-------+--------------+---------------+----------+
+12 rows in set (0.001 sec)
