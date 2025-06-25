@@ -1,0 +1,62 @@
+SOAL 4.1
+
+MariaDB [dbkoperasi_sibmandiri]> SELECT pesanan.id, pesanan.tanggal, pesanan.total,
+    -> pelanggan.kode, pelanggan.nama AS pelanggan,
+    -> kartu.nama AS nama_kartu, kartu.diskon FROM pesanan
+    -> INNER JOIN pelanggan ON pesanan.pelanggan_id = pelanggan.id
+    -> INNER JOIN kartu ON pelanggan.kartu_id = kartu.id;
++----+------------+---------+------+---------------+---------------+--------+
+| id | tanggal    | total   | kode | pelanggan     | nama_kartu    | diskon |
++----+------------+---------+------+---------------+---------------+--------+
+|  1 | 2015-11-04 | 9720000 | C001 | Agung Sedayu  | Gold Utama    |   0.05 |
+|  2 | 2015-11-04 |   17500 | C003 | Sekar Mirah   | Gold Utama    |   0.05 |
+|  3 | 2015-11-04 |       0 | C006 | Gayatri Dwi   | Gold Utama    |   0.05 |
+|  4 | 2015-11-04 |       0 | C007 | Dewi Gyat     | Gold Utama    |   0.05 |
+|  5 | 2015-11-04 |       0 | C010 | Cassanndra    | Gold Utama    |   0.05 |
+|  6 | 2015-11-04 |       0 | C002 | Pandan Wangi  | Platinum Jaya |    0.1 |
+|  7 | 2015-11-04 |       0 | C005 | Pradabashu    | Platinum Jaya |    0.1 |
+|  8 | 2015-11-04 |       0 | C004 | Swandaru Geni | Non Member    |      0 |
+|  9 | 2015-11-04 |       0 | C008 | Andre Haru    | Non Member    |      0 |
+| 10 | 2015-11-04 |       0 | C009 | Ahmad Hasan   | Non Member    |      0 |
++----+------------+---------+------+---------------+---------------+--------+
+10 rows in set (0.043 sec)
+
+
+MariaDB [dbkoperasi_sibmandiri]> SELECT pembelian.id, pembelian.tanggal, pembelian.nomor, pembelian.jumlah, pembelian.harga,
+    -> produk.nama AS produk, vendor.nama AS vendor, vendor.kontak FROM pembelian
+    -> INNER JOIN produk ON pembelian.produk_id = produk.id
+    -> INNER JOIN vendor ON pembelian.vendor_id = vendor.id;
++----+------------+-------+--------+---------+------------------+----------------------+-----------------+
+| id | tanggal    | nomor | jumlah | harga   | produk           | vendor               | kontak          |
++----+------------+-------+--------+---------+------------------+----------------------+-----------------+
+|  1 | 2019-10-10 | P001  |      2 | 3500000 | Televisi 21 inch | PT Guna Samudra      | Ali Nurdin      |
+|  2 | 2019-11-20 | P002  |      5 | 5500000 | Televisi 40 inch | PT Pondok C9         | Putri Ramadhani |
+|  3 | 2019-12-12 | P003  |      5 | 5400000 | Televisi 40 inch | PT Guna Samudra      | Ali Nurdin      |
+|  4 | 2020-01-20 | P004  |    200 |    1800 | Teh Botol        | CV Jaya Raya Semesta | Dwi Rahayu      |
+|  5 | 2020-01-20 | P005  |    100 |    2300 | Teh Kotak        | CV Jaya Raya Semesta | Dwi Rahayu      |
++----+------------+-------+--------+---------+------------------+----------------------+-----------------+
+5 rows in set (0.004 sec)
+
+
+MariaDB [dbkoperasi_sibmandiri]> SELECT pesanan.id, pesanan.tanggal, pesanan.total,
+    -> pelanggan.nama, produk.kode, produk.nama AS produk, jenis_produk.nama AS jenis,
+    -> pesanan_items.qty, pesanan_items.harga FROM pesanan
+    -> INNER JOIN pelanggan ON pesanan.pelanggan_id = pelanggan.id
+    -> INNER JOIN pesanan_items ON pesanan_items.pesanan_id = pesanan.id
+    -> INNER JOIN produk ON produk.id = pesanan_items.produk_id
+    -> INNER JOIN jenis_produk ON produk.jenis_produk_id = produk.id;
++----+------------+---------+--------------+------+------------------+------------+------+---------+
+| id | tanggal    | total   | nama         | kode | produk           | jenis      | qty  | harga   |
++----+------------+---------+--------------+------+------------------+------------+------+---------+
+|  1 | 2015-11-04 | 9720000 | Agung Sedayu | TV01 | Televisi 21 inch | elektronik |    1 | 5040000 |
+|  1 | 2015-11-04 | 9720000 | Agung Sedayu | TV01 | Televisi 21 inch | furniture  |    1 | 5040000 |
+|  1 | 2015-11-04 | 9720000 | Agung Sedayu | TV01 | Televisi 21 inch | makanan    |    1 | 5040000 |
+|  1 | 2015-11-04 | 9720000 | Agung Sedayu | TV01 | Televisi 21 inch | minuman    |    1 | 5040000 |
+|  1 | 2015-11-04 | 9720000 | Agung Sedayu | TV01 | Televisi 21 inch | komputer   |    1 | 5040000 |
+|  3 | 2015-11-04 |       0 | Gayatri Dwi  | TV01 | Televisi 21 inch | elektronik |    1 | 5040000 |
+|  3 | 2015-11-04 |       0 | Gayatri Dwi  | TV01 | Televisi 21 inch | furniture  |    1 | 5040000 |
+|  3 | 2015-11-04 |       0 | Gayatri Dwi  | TV01 | Televisi 21 inch | makanan    |    1 | 5040000 |
+|  3 | 2015-11-04 |       0 | Gayatri Dwi  | TV01 | Televisi 21 inch | minuman    |    1 | 5040000 |
+|  3 | 2015-11-04 |       0 | Gayatri Dwi  | TV01 | Televisi 21 inch | komputer   |    1 | 5040000 |
++----+------------+---------+--------------+------+------------------+------------+------+---------+
+10 rows in set (0.014 sec)

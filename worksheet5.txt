@@ -1,0 +1,118 @@
+SOAL 5.1
+
+MariaDB [dbkoperasi_sibmandiri]> CREATE VIEW pesanan_pelanggan_kartu AS
+    -> SELECT pesanan.id, pesanan.tanggal, pesanan.total, pelanggan.kode, pelanggan.nama,
+    -> kartu.nama AS nama_kartu, kartu.diskon FROM pesanan
+    -> INNER JOIN pelanggan ON pesanan.pelanggan_id = pelanggan.id
+    -> INNER JOIN kartu ON pelanggan.kartu_id = kartu.id;
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> SELECT * FROM pesanan_pelanggan_kartu;
++----+------------+---------+------+---------------+---------------+--------+
+| id | tanggal    | total   | kode | nama          | nama_kartu    | diskon |
++----+------------+---------+------+---------------+---------------+--------+
+|  1 | 2015-11-04 | 9720000 | C001 | Agung Sedayu  | Gold Utama    |   0.05 |
+|  2 | 2015-11-04 |   17500 | C003 | Sekar Mirah   | Gold Utama    |   0.05 |
+|  3 | 2015-11-04 |       0 | C006 | Gayatri Dwi   | Gold Utama    |   0.05 |
+|  4 | 2015-11-04 |       0 | C007 | Dewi Gyat     | Gold Utama    |   0.05 |
+|  5 | 2015-11-04 |       0 | C010 | Cassanndra    | Gold Utama    |   0.05 |
+|  6 | 2015-11-04 |       0 | C002 | Pandan Wangi  | Platinum Jaya |    0.1 |
+|  7 | 2015-11-04 |       0 | C005 | Pradabashu    | Platinum Jaya |    0.1 |
+|  8 | 2015-11-04 |       0 | C004 | Swandaru Geni | Non Member    |      0 |
+|  9 | 2015-11-04 |       0 | C008 | Andre Haru    | Non Member    |      0 |
+| 10 | 2015-11-04 |       0 | C009 | Ahmad Hasan   | Non Member    |      0 |
++----+------------+---------+------+---------------+---------------+--------+
+10 rows in set (0.003 sec)
+
+
+MariaDB [dbkoperasi_sibmandiri]> CREATE VIEW pembelian_produk_vendor AS
+    -> SELECT pembelian.id, pembelian.tanggal, pembelian.nomor, pembelian.jumlah, pembelian.harga,
+    -> produk.nama AS produk, vendor.nama AS vendor, vendor.kontak AS kontak_vendor FROM pembelian
+    -> INNER JOIN produk ON pembelian.produk_id = produk.id
+    -> INNER JOIN vendor ON pembelian.vendor_id = vendor.id;
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> SELECT * FROM pembelian_produk_vendor;
++----+------------+-------+--------+---------+------------------+----------------------+-----------------+
+| id | tanggal    | nomor | jumlah | harga   | produk           | vendor               | kontak_vendor   |
++----+------------+-------+--------+---------+------------------+----------------------+-----------------+
+|  1 | 2019-10-10 | P001  |      2 | 3500000 | Televisi 21 inch | PT Guna Samudra      | Ali Nurdin      |
+|  2 | 2019-11-20 | P002  |      5 | 5500000 | Televisi 40 inch | PT Pondok C9         | Putri Ramadhani |
+|  3 | 2019-12-12 | P003  |      5 | 5400000 | Televisi 40 inch | PT Guna Samudra      | Ali Nurdin      |
+|  4 | 2020-01-20 | P004  |    200 |    1800 | Teh Botol        | CV Jaya Raya Semesta | Dwi Rahayu      |
+|  5 | 2020-01-20 | P005  |    100 |    2300 | Teh Kotak        | CV Jaya Raya Semesta | Dwi Rahayu      |
++----+------------+-------+--------+---------+------------------+----------------------+-----------------+
+5 rows in set (0.002 sec)
+
+
+MariaDB [dbkoperasi_sibmandiri]> CREATE VIEW detail_produk_pesanan AS
+    -> SELECT pesanan.id, pesanan.tanggal, pesanan.total, pelanggan.nama,
+    -> produk.kode, produk.nama AS produk, jenis_produk.nama AS jenis,
+    -> pesanan_items.qty, pesanan_items.harga FROM pesanan
+    -> INNER JOIN pelanggan ON pesanan.pelanggan_id = pelanggan.id
+    -> INNER JOIN pesanan_items ON pesanan_items.pesanan_id = pesanan.id
+    -> INNER JOIN produk ON produk.id = pesanan_items.produk_id
+    -> INNER JOIN jenis_produk ON produk.jenis_produk_id = produk.id;
+Query OK, 0 rows affected (0.010 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> SELECT * FROM detail_produk_pesanan;
++----+------------+---------+--------------+------+------------------+------------+------+---------+
+| id | tanggal    | total   | nama         | kode | produk           | jenis      | qty  | harga   |
++----+------------+---------+--------------+------+------------------+------------+------+---------+
+|  1 | 2015-11-04 | 9720000 | Agung Sedayu | TV01 | Televisi 21 inch | elektronik |    1 | 5040000 |
+|  1 | 2015-11-04 | 9720000 | Agung Sedayu | TV01 | Televisi 21 inch | furniture  |    1 | 5040000 |
+|  1 | 2015-11-04 | 9720000 | Agung Sedayu | TV01 | Televisi 21 inch | makanan    |    1 | 5040000 |
+|  1 | 2015-11-04 | 9720000 | Agung Sedayu | TV01 | Televisi 21 inch | minuman    |    1 | 5040000 |
+|  1 | 2015-11-04 | 9720000 | Agung Sedayu | TV01 | Televisi 21 inch | komputer   |    1 | 5040000 |
+|  3 | 2015-11-04 |       0 | Gayatri Dwi  | TV01 | Televisi 21 inch | elektronik |    1 | 5040000 |
+|  3 | 2015-11-04 |       0 | Gayatri Dwi  | TV01 | Televisi 21 inch | furniture  |    1 | 5040000 |
+|  3 | 2015-11-04 |       0 | Gayatri Dwi  | TV01 | Televisi 21 inch | makanan    |    1 | 5040000 |
+|  3 | 2015-11-04 |       0 | Gayatri Dwi  | TV01 | Televisi 21 inch | minuman    |    1 | 5040000 |
+|  3 | 2015-11-04 |       0 | Gayatri Dwi  | TV01 | Televisi 21 inch | komputer   |    1 | 5040000 |
++----+------------+---------+--------------+------+------------------+------------+------+---------+
+10 rows in set (0.003 sec)
+
+
+
+SOAL 5.2 
+
+MariaDB [dbkoperasi_sibmandiri]> START TRANSACTION;
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> INSERT INTO produk (kode, nama, harga_jual, harga_beli, stok, min_stok, jenis_produk_id)
+    -> VALUES ('K30011', 'Meja Rias', 2000000, 3000000, 10, 5, 2),
+    -> ('K40011', 'Kursi Kelas', 300000, 400000, 20, 5, 2),
+    -> ('K50011', 'Kursi Gaming', 4000000, 5000000, 30, 5, 2);
+Query OK, 3 rows affected (0.042 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [dbkoperasi_sibmandiri]> UPDATE produk SET stok = 40 WHERE id = 1;
+Query OK, 1 row affected (0.001 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbkoperasi_sibmandiri]> SAVEPOINT sebelum_hapus_pembayaran;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> DELETE FROM pembayaran WHERE id = 5;
+Query OK, 0 rows affected (0.036 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> ROLLBACK TO SAVEPOINT sebelum_hapus_pembayaran;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> UPDATE kartu SET iuran = 80000 WHERE id = 2;
+Query OK, 1 row affected (0.001 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [dbkoperasi_sibmandiri]> SELECT * FROM kartu;
++----+------+---------------+--------+--------+
+| id | kode | nama          | diskon | iuran  |
++----+------+---------------+--------+--------+
+|  1 | GOLD | Gold Utama    |   0.05 | 100000 |
+|  2 | PLAT | Platinum Jaya |    0.1 |  80000 |
+|  3 | SLV  | Silver        |  0.025 |  50000 |
+|  4 | NO   | Non Member    |      0 |      0 |
++----+------+---------------+--------+--------+
+4 rows in set (0.001 sec)
+
+MariaDB [dbkoperasi_sibmandiri]> COMMIT;
+Query OK, 0 rows affected (0.042 sec)
